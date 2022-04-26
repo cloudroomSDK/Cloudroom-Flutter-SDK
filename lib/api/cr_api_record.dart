@@ -48,7 +48,7 @@ extension CrRecordApi on CrSDK {
   // 获取云端录制、云端直播状态
   Future<CR_MIXER_STATE> getSvrMixerState() async {
     final int stateidx = await CrImpl.instance.getSvrMixerState();
-    return CR_MIXER_STATE.values[stateidx]; 
+    return CR_MIXER_STATE.values[stateidx];
   }
 
   // 获取本地混图器状态
