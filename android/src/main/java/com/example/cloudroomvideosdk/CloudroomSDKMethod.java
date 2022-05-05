@@ -623,6 +623,13 @@ public class CloudroomSDKMethod {
     result.success(mixerState.value());
   }
 
+  public static void getAllCloudMixerInfo(MethodCall call, Result result) {
+    String mixerInfo = CloudroomVideoMeeting
+      .getInstance()
+      .getAllCloudMixerInfo();
+    result.success(mixerInfo);
+  }
+
   // 获取云端录制、云端直播状态
   public static void getSvrMixerState(MethodCall call, Result result) {
     MIXER_STATE mixerState = CloudroomVideoMeeting

@@ -1,6 +1,6 @@
 name: cloudroomvideosdk_example
 description: Demonstrates how to use the cloudroomvideosdk plugin.
-version: 1.0.7
+version: 1.0.8
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

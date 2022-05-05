@@ -690,3 +690,78 @@ enum NOTIFIER_EVENT {
   notifyMediaStop,
   notifyMeetingCustomMsg
 }
+
+enum CR_CLOUDMIXER_MODE {
+  CONFLUENCE, // 合流模式
+  SINGLE // 单流模式
+}
+
+// 生成音频文件配置
+class CrCloudMixerAudioFileCfg {
+  // 单流模式参数：
+  String? svrPath;
+  String? svrFileNameSuffix;
+  List subscribeAudios = [];
+  // 合流模式参数
+  String? svrPathName;
+  int? aChannelType;
+  List<String> aChannelContent = [];
+}
+
+// 生成视频文件配置
+class CrCloudMixerVideoFileCfg {
+  // 单流模式参数：
+  String? svrPath;
+  String? svrFileNameSuffix;
+  List<String> subscribeVideos = [];
+  int? aStreamType;
+  // 合流模式参数：
+  String? svrPathName;
+  int? aChannelType;
+  List<String> aChannelContent = [];
+  int? vWidth;
+  int? vHeight;
+  int? vFps;
+  int? vBps;
+  int? vQP;
+  List<CrMutiMixerContent> layoutConfig = [];
+}
+
+// 云存储配置，不配置时将存储在云屋服务器上
+class CrStorageConfig {
+  late int vendor;
+  late String region;
+  late String bucket;
+  late String accessKey;
+  late String secretKey;
+}
+
+// 云端混图器配置
+class CrCloudMixerCfgObj {
+  CR_CLOUDMIXER_MODE mode;
+  CrCloudMixerAudioFileCfg? audioFileCfg;
+  CrCloudMixerVideoFileCfg? videoFileCfg;
+  CrStorageConfig? storageConfig;
+
+  CrCloudMixerCfgObj({required this.mode});
+}
+
+// 云端混图器信息
+class CrCloudMixerInfo {
+  late String ID;
+  late String owner;
+  late String cfg;
+  late CR_MIXER_STATE state;
+}
+
+// 云端混图器输出信息
+class CrCloudMixerOutputInfo {
+  late String id;
+  late CR_MIXER_OUTPUT_STATE state;
+  late String svrFilePathName;
+  late int startTime;
+  late int duration; // 录像文件时长，单位：毫秒;
+  late int fileSize; // 录像文件大小；
+  late int errCode; // 错误码
+  late String errDesc;
+}

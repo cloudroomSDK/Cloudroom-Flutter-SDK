@@ -16,7 +16,8 @@ A new flutter plugin project.
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.vendored_frameworks = 'Framework/CloudroomVideoSDK_IOS.framework'
+  s.dependency 'cloudroomvideo_ios_library', '~> 0.0.2'
+  #s.vendored_frameworks = 'Framework/CloudroomVideoSDK_IOS.framework'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.

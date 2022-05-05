@@ -92,4 +92,8 @@ extension CrRecordApi on CrSDK {
   Future<void> stopSvrMixer() async {
     return await CrImpl.instance.stopSvrMixer();
   }
+
+  Future<String> getAllCloudMixerInfo() async {
+    return await CrImpl.instance.getAllCloudMixerInfo();
+  }
 }

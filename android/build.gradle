@@ -36,5 +36,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.CloudroomAdmin:cloudroomvideo_android_library:1.0.3'
+    implementation 'com.github.CloudroomSDK:cloudroomvideo_android_library:1.0.3'
 }

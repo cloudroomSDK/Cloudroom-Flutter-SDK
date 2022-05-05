@@ -76,4 +76,8 @@ extension CrRecordImpl on CrImpl {
   Future<void> stopSvrMixer() async {
     return await _channel.invokeMethod("stopSvrMixer");
   }
+
+  Future<String> getAllCloudMixerInfo() async {
+    return await _channel.invokeMethod("getAllCloudMixerInfo");
+  }
 }
