@@ -105,7 +105,6 @@ class _AudioChannelState extends State<AudioChannel>
 
   // 麦克风开关
   void switchMicPhone(bool isOpenMic) {
-    setState(() => _isOpenMic = isOpenMic);
     isOpenMic
         ? CrSDK.instance.openMic(userId)
         : CrSDK.instance.closeMic(userId);

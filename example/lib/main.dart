@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloudroomvideosdk/cloudroomvideosdk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,10 @@ import 'application/application.dart';
 import 'application/connectivitys.dart';
 
 void main() {
+  // 强制竖屏
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(App());
   EasyLoading.instance
     ..maskColor = Colors.black.withOpacity(0.5)
@@ -79,9 +84,6 @@ class _AppState extends State<App>
     if (GlobalConfig.instance.initStatus != INIT_STATUS.init) {
       sdkInit();
     }
-    // else if (GlobalConfig.instance.loginStatus != LOGIN_STATUS.login) {
-    //   sdkLogin();
-    // }
   }
 
   @override
@@ -164,7 +166,6 @@ class _AppState extends State<App>
     if (sdkErr == 0) {
       GlobalConfig.instance.initStatus = INIT_STATUS.init;
       await CrSDK.instance.setServerAddr(GlobalConfig.instance.serverAddr);
-      // sdkLogin();
     }
   }
 

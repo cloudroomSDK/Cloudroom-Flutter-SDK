@@ -65,6 +65,10 @@ class VideoViewsState extends State<VideoViews> with CrSDKNotifier {
   List<VideoPosition> get videoPosition => _videoPosition;
 
   int _speakerVolume = 0;
+  List<CrCameraInfo> _camerasInfo = [];
+
+  CrCameraInfo? _defaultCameraInfo;
+  CrCameraInfo? get defaultCameraInfo => _defaultCameraInfo;
 
   @override
   void initState() {
@@ -75,6 +79,12 @@ class VideoViewsState extends State<VideoViews> with CrSDKNotifier {
     ]);
     // 初始化小视频的摆放位置
     initCalcVideoPosition();
+    getDefaultVideo(userId).then((_) {
+      // 获取的摄像头不是前置摄像头就改成前置摄像头
+      if (_defaultCameraInfo?.cameraPosition != CR_CAMERA_POSITION.FRONT) {
+        setDefaultVideo(CR_CAMERA_POSITION.FRONT);
+      }
+    });
     setMyVideo(userId);
     getWatchableVideos();
     getSpeakerVolume();
@@ -174,6 +184,44 @@ class VideoViewsState extends State<VideoViews> with CrSDKNotifier {
           pleft: pleft);
     });
     _videoPosition.addAll(videoPosition);
+  }
+
+  // 获取用户所有的摄像头信息
+  Future<List<CrCameraInfo>> getAllVideoInfo(String userId) {
+    return CrSDK.instance.getAllVideoInfo(userId).then((camerasInfo) {
+      _camerasInfo = camerasInfo;
+      return camerasInfo;
+    });
+  }
+
+  // 获取用户默认摄像头
+  Future<int> getDefaultVideo(String userId) {
+    return getAllVideoInfo(userId).then((List<CrCameraInfo> camerasInfo) {
+      return CrSDK.instance.getDefaultVideo(userId).then((int videoID) {
+        for (CrCameraInfo cInfo in camerasInfo) {
+          if (cInfo.videoID == videoID) {
+            _defaultCameraInfo = cInfo;
+          }
+        }
+        return videoID;
+      });
+    });
+  }
+
+  // 切换前后摄像头
+  void setDefaultVideo(CR_CAMERA_POSITION cameraPosition, [Function? callback]) {
+    // 从摄像头信息中找到对应位置的摄像头
+    for (int i = 0; i < _camerasInfo.length; i++) {
+      CrCameraInfo item = _camerasInfo[i];
+      if (item.cameraPosition == cameraPosition) {
+        setState(() {
+          _defaultCameraInfo = item;
+        });
+        callback!(item);
+        CrSDK.instance.setDefaultVideo(userId, item.videoID);
+        break;
+      }
+    }
   }
 
   void setMyVideo(userID) {

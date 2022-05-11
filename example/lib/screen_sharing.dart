@@ -90,10 +90,12 @@ class _ScreenSharingWidgetState extends State<ScreenSharing>
 
   // 麦克风开关
   switchMicPhone(bool isOpenMic) {
-    setState(() => _isOpenMic = isOpenMic);
-    isOpenMic
-        ? CrSDK.instance.openMic(userId)
-        : CrSDK.instance.closeMic(userId);
+    if (isOpenMic) {
+      CrSDK.instance.openMic(userId);
+      CrSDK.instance.setSpeakerOut(true);
+    } else {
+      CrSDK.instance.closeMic(userId);
+    }
   }
 
   // 通知开启屏幕共享
@@ -275,8 +277,8 @@ class _ScreenSharingWidgetState extends State<ScreenSharing>
         color: Colors.black,
         child: Stack(children: [
           Center(
-            child: SizedBox(
-              // height: ScreenUtil().setHeight(230),
+            child: Container(
+              color: Colors.blue,
               child: _screenViewWidget,
             ),
           ),

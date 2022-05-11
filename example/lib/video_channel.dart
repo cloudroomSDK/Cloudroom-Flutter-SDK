@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'application/application.dart';
 import 'package:cloudroomvideosdk/cloudroomvideosdk.dart';
@@ -13,20 +12,22 @@ class VideoChannel extends StatefulWidget {
   _VideoChannelState createState() => _VideoChannelState();
 }
 
+GlobalKey<VideoViewsState> videoViewsKey = GlobalKey();
+
 class _VideoChannelState extends State<VideoChannel>
     with CrSDKNotifier, CommonFunc {
   String userId = GlobalConfig.instance.userID;
   int? confId = GlobalConfig.instance.confID;
   String nickName = GlobalConfig.instance.nickName;
   bool _isOpenCamera = false; // 是否开启摄像头
-  List<CrCameraInfo> _camerasInfo = [];
-  CrCameraInfo? _defaultCameraInfo;
   bool _isOpenMic = false; // 是否开启麦克风
   bool _isSpeakerOut = false; // 是否外放（扬声器）
   VideoViews? _videoViews;
 
+  // List<CrCameraInfo> _camerasInfo = [];
   bool get _isFrontCamera =>
-      _defaultCameraInfo?.cameraPosition == CR_CAMERA_POSITION.FRONT; // 是否前置摄像头
+      videoViewsKey.currentState?.defaultCameraInfo?.cameraPosition ==
+      CR_CAMERA_POSITION.FRONT; // 是否前置摄像头
 
   @override
   void initState() {
@@ -50,15 +51,10 @@ class _VideoChannelState extends State<VideoChannel>
 
   @override
   enterMeetingSuccess() {
-    getSpeakerOut();
+    switchMicPhone(true);
+    setSpeakerOut(true);
     switchCamera(true);
-    getDefaultVideo(userId).then((value) {
-      // 获取的摄像头不是前置摄像头就改成前置摄像头
-      if (_defaultCameraInfo?.cameraPosition != CR_CAMERA_POSITION.FRONT) {
-        setDefaultVideo(CR_CAMERA_POSITION.FRONT);
-      }
-      _videoViews = VideoViews();
-    });
+    _videoViews = VideoViews(key: videoViewsKey);
   }
 
   @override
@@ -90,52 +86,50 @@ class _VideoChannelState extends State<VideoChannel>
 
   // 摄像头开关
   void switchCamera(bool isOpenCamera) {
-    setState(() => _isOpenCamera = isOpenCamera);
     isOpenCamera
         ? CrSDK.instance.openVideo(userId)
         : CrSDK.instance.closeVideo(userId);
   }
 
-  // 获取用户所有的摄像头信息
-  Future<List<CrCameraInfo>> getAllVideoInfo(String userId) {
-    return CrSDK.instance.getAllVideoInfo(userId).then((camerasInfo) {
-      _camerasInfo = camerasInfo;
-      return camerasInfo;
-    });
-  }
+  // // 获取用户所有的摄像头信息
+  // Future<List<CrCameraInfo>> getAllVideoInfo(String userId) {
+  //   return CrSDK.instance.getAllVideoInfo(userId).then((camerasInfo) {
+  //     _camerasInfo = camerasInfo;
+  //     return camerasInfo;
+  //   });
+  // }
 
-  // 获取用户默认摄像头
-  Future<int> getDefaultVideo(String userId) {
-    return getAllVideoInfo(userId).then((List<CrCameraInfo> camerasInfo) {
-      return CrSDK.instance.getDefaultVideo(userId).then((int videoID) {
-        for (CrCameraInfo cInfo in camerasInfo) {
-          if (cInfo.videoID == videoID) {
-            _defaultCameraInfo = cInfo;
-          }
-        }
-        return videoID;
-      });
-    });
-  }
+  // // 获取用户默认摄像头
+  // Future<int> getDefaultVideo(String userId) {
+  //   return getAllVideoInfo(userId).then((List<CrCameraInfo> camerasInfo) {
+  //     return CrSDK.instance.getDefaultVideo(userId).then((int videoID) {
+  //       for (CrCameraInfo cInfo in camerasInfo) {
+  //         if (cInfo.videoID == videoID) {
+  //           _defaultCameraInfo = cInfo;
+  //         }
+  //       }
+  //       return videoID;
+  //     });
+  //   });
+  // }
 
-  // 切换前后摄像头
-  void setDefaultVideo(CR_CAMERA_POSITION cameraPosition) {
-    // 从摄像头信息中找到对应位置的摄像头
-    for (int i = 0; i < _camerasInfo.length; i++) {
-      CrCameraInfo item = _camerasInfo[i];
-      if (item.cameraPosition == cameraPosition) {
-        setState(() {
-          _defaultCameraInfo = item;
-        });
-        CrSDK.instance.setDefaultVideo(userId, item.videoID);
-        break;
-      }
-    }
-  }
+  // // 切换前后摄像头
+  // void setDefaultVideo(CR_CAMERA_POSITION cameraPosition) {
+  //   // 从摄像头信息中找到对应位置的摄像头
+  //   for (int i = 0; i < _camerasInfo.length; i++) {
+  //     CrCameraInfo item = _camerasInfo[i];
+  //     if (item.cameraPosition == cameraPosition) {
+  //       setState(() {
+  //         _defaultCameraInfo = item;
+  //       });
+  //       CrSDK.instance.setDefaultVideo(userId, item.videoID);
+  //       break;
+  //     }
+  //   }
+  // }
 
   // 麦克风开关
   switchMicPhone(bool isOpenMic) {
-    setState(() => _isOpenMic = isOpenMic);
     isOpenMic
         ? CrSDK.instance.openMic(userId)
         : CrSDK.instance.closeMic(userId);
@@ -218,7 +212,10 @@ class _VideoChannelState extends State<VideoChannel>
                                             _isFrontCamera
                                                 ? CR_CAMERA_POSITION.BACK
                                                 : CR_CAMERA_POSITION.FRONT;
-                                        setDefaultVideo(cameraPosition);
+                                        videoViewsKey.currentState
+                                            ?.setDefaultVideo(cameraPosition, () {
+                                              setState(() {});
+                                            });
                                       }),
                                 ),
                                 Container(
