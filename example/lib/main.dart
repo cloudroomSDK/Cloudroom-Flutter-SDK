@@ -187,7 +187,7 @@ class _AppState extends State<App>
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: _designSize,
-        builder: () => MaterialApp(
+        builder: (_, __) => MaterialApp(
               title: 'CloudRoom',
               theme: ThemeData(
                 brightness: Brightness.light,

@@ -11,7 +11,8 @@
 		167B427C27E88DFC00CE17FC /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 167B427B27E88DFC00CE17FC /* ReplayKit.framework */; };
 		167B428027E88DFC00CE17FC /* SampleHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 167B427F27E88DFC00CE17FC /* SampleHandler.m */; };
 		167B428427E88DFC00CE17FC /* ScreenShareUpload.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 167B427A27E88DFB00CE17FC /* ScreenShareUpload.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		167B428D27E962A300CE17FC /* CloudroomReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 167B428C27E962A300CE17FC /* CloudroomReplayKitExt.framework */; };
+		16D03D2C2828FAA9000C07CF /* CloudroomReplayKitExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16D03D282828E8F1000C07CF /* CloudroomReplayKitExt.framework */; };
+		16D03D2D2828FAA9000C07CF /* CloudroomReplayKitExt.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 16D03D282828E8F1000C07CF /* CloudroomReplayKitExt.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		86A165EA5F1BDF86DCCA61B6 /* libPods-Runner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D0052B250F954F5FE37585B /* libPods-Runner.a */; };
 		978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */; };
@@ -43,6 +44,17 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		16D03D2E2828FAA9000C07CF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				16D03D2D2828FAA9000C07CF /* CloudroomReplayKitExt.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -67,7 +79,7 @@
 		167B428127E88DFC00CE17FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		167B428A27E88E1900CE17FC /* ScreenShareUpload.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScreenShareUpload.entitlements; sourceTree = "<group>"; };
 		167B428B27E88E2000CE17FC /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
-		167B428C27E962A300CE17FC /* CloudroomReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudroomReplayKitExt.framework; path = Framework/CloudroomReplayKitExt.framework; sourceTree = "<group>"; };
+		16D03D282828E8F1000C07CF /* CloudroomReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudroomReplayKitExt.framework; path = Framework/CloudroomReplayKitExt.framework; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -90,7 +102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				167B427C27E88DFC00CE17FC /* ReplayKit.framework in Frameworks */,
-				167B428D27E962A300CE17FC /* CloudroomReplayKitExt.framework in Frameworks */,
+				16D03D2C2828FAA9000C07CF /* CloudroomReplayKitExt.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +198,7 @@
 		D9419265FEC3E007D23E6051 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				167B428C27E962A300CE17FC /* CloudroomReplayKitExt.framework */,
+				16D03D282828E8F1000C07CF /* CloudroomReplayKitExt.framework */,
 				9D0052B250F954F5FE37585B /* libPods-Runner.a */,
 				167B427B27E88DFC00CE17FC /* ReplayKit.framework */,
 			);
@@ -203,6 +215,7 @@
 				167B427627E88DFB00CE17FC /* Sources */,
 				167B427727E88DFB00CE17FC /* Frameworks */,
 				167B427827E88DFB00CE17FC /* Resources */,
+				16D03D2E2828FAA9000C07CF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -444,20 +457,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 93XFE92JTW;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Framework/",
+					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScreenShareUpload/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ScreenShareUpload;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -483,20 +496,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 93XFE92JTW;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Framework/",
+					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScreenShareUpload/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ScreenShareUpload;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
@@ -521,20 +534,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 93XFE92JTW;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Framework/",
+					"$(PROJECT_DIR)/Framework",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScreenShareUpload/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ScreenShareUpload;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
@@ -605,6 +618,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 93XFE92JTW;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -730,6 +744,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 93XFE92JTW;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -750,6 +765,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 93XFE92JTW;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

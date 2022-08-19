@@ -639,21 +639,9 @@ static CloudroomVideoSDKMethodHandler *shareInstance;
     result([NSNumber numberWithInteger:state]);
 }
 
-- (void)createLocMixer:(FlutterMethodCall *)call result:(FlutterResult)result {
-    NSDictionary *arguments = call.arguments;
-    NSString *mixerID = [arguments objectForKey:@"mixerID"];
-    
-    NSDictionary *mixerCfgDic = [NSDictionary objectWithJSONString:[arguments objectForKey:@"mixerCfg"]];
-    MixerCfg *mixerCfg = [MixerCfg CR_modelWithDictionary:mixerCfgDic];
-    NSDictionary *dstResolution = [mixerCfgDic objectForKey:@"dstResolution"];
-    mixerCfg.dstResolution = CGSizeMake([dstResolution[@"width"] intValue], [dstResolution[@"height"] intValue]);
-    mixerCfg.fps = [[mixerCfgDic objectForKey:@"frameRate"] intValue];
-    mixerCfg.maxBPS = [[mixerCfgDic objectForKey:@"bitRate"] intValue];
-    mixerCfg.gop = [[mixerCfgDic objectForKey:@"gop"] intValue];
-    mixerCfg.defaultQP = [[mixerCfgDic objectForKey:@"defaultQP"] intValue];
-    
-    NSArray *mixerCotentRects = [NSArray objectWithJSONString:[arguments objectForKey:@"mixerCotentRects"]];
-    NSMutableArray *kMuItemArr = [NSMutableArray array];
+- (NSMutableArray<RecContentItem *> *)parseMixerCotentRects:(NSString *)jsonStr {
+    NSArray *mixerCotentRects = [NSArray objectWithJSONString:jsonStr];
+    NSMutableArray<RecContentItem *> *kMuItemArr = [NSMutableArray array];
     for (NSDictionary *obj in mixerCotentRects) {
         RecContentItem *recContentItem = [[RecContentItem alloc] init];
         NSString *userID = [obj valueForKey:@"userId"];
@@ -689,8 +677,24 @@ static CloudroomVideoSDKMethodHandler *shareInstance;
         [kMuItemArr addObject:recContentItem];
     }
     
+    return kMuItemArr;
+}
+
+- (void)createLocMixer:(FlutterMethodCall *)call result:(FlutterResult)result {
+    NSDictionary *arguments = call.arguments;
+    NSString *mixerID = [arguments objectForKey:@"mixerID"];
+    
+    NSDictionary *mixerCfgDic = [NSDictionary objectWithJSONString:[arguments objectForKey:@"mixerCfg"]];
+    MixerCfg *mixerCfg = [MixerCfg CR_modelWithDictionary:mixerCfgDic];
+    NSDictionary *dstResolution = [mixerCfgDic objectForKey:@"dstResolution"];
+    mixerCfg.dstResolution = CGSizeMake([dstResolution[@"width"] intValue], [dstResolution[@"height"] intValue]);
+    mixerCfg.fps = [[mixerCfgDic objectForKey:@"frameRate"] intValue];
+    mixerCfg.maxBPS = [[mixerCfgDic objectForKey:@"bitRate"] intValue];
+    mixerCfg.gop = [[mixerCfgDic objectForKey:@"gop"] intValue];
+    mixerCfg.defaultQP = [[mixerCfgDic objectForKey:@"defaultQP"] intValue];
+    
     MixerContent *mixerContent = [[MixerContent alloc] init];
-    mixerContent.contents = kMuItemArr;
+    mixerContent.contents = [self parseMixerCotentRects:[arguments objectForKey:@"mixerCotentRects"]];
     
     CRVIDEOSDK_ERR_DEF error = [[CloudroomVideoMeeting shareInstance] createLocMixer:mixerID cfg:mixerCfg content:mixerContent];
     result([NSNumber numberWithInteger:error]);
@@ -699,9 +703,11 @@ static CloudroomVideoSDKMethodHandler *shareInstance;
 - (void)updateLocMixerContent:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *arguments = call.arguments;
     NSString *mixerID = [arguments objectForKey:@"mixerID"];
-    MixerContent *mixerCotentRects = [MixerContent CR_modelWithJSON:[arguments objectForKey:@"mixerCotentRects"]];
     
-    CRVIDEOSDK_ERR_DEF error = [[CloudroomVideoMeeting shareInstance] updateLocMixerContent:mixerID content:mixerCotentRects];
+    MixerContent *mixerContent = [[MixerContent alloc] init];
+    mixerContent.contents = [self parseMixerCotentRects:[arguments objectForKey:@"mixerCotentRects"]];
+    
+    CRVIDEOSDK_ERR_DEF error = [[CloudroomVideoMeeting shareInstance] updateLocMixerContent:mixerID content:mixerContent];
     result([NSNumber numberWithInteger:error]);
 }
 

@@ -623,13 +623,6 @@ public class CloudroomSDKMethod {
     result.success(mixerState.value());
   }
 
-  public static void getAllCloudMixerInfo(MethodCall call, Result result) {
-    String mixerInfo = CloudroomVideoMeeting
-      .getInstance()
-      .getAllCloudMixerInfo();
-    result.success(mixerInfo);
-  }
-
   // 获取云端录制、云端直播状态
   public static void getSvrMixerState(MethodCall call, Result result) {
     MIXER_STATE mixerState = CloudroomVideoMeeting
@@ -668,6 +661,27 @@ public class CloudroomSDKMethod {
     CloudroomVideoMeeting.getInstance().stopSvrMixer();
     result.success("");
   }
+
+  // 新的云端录制
+
+  // 得到所有云端混图器信息
+  // public static void getAllCloudMixerInfo(MethodCall call, Result result) {
+  //   String mixerInfos = CloudroomVideoMeeting
+  //     .getInstance()
+  //     .getAllCloudMixerInfo();
+  //   result.success(mixerInfos);
+  // }
+
+  // public static void getCloudMixerInfo(MethodCall call, Result result) {
+  //   String mixerID = call.argument("mixerID");
+  //   String mixerInfo = CloudroomVideoMeeting.getInstance().getCloudMixerInfo();
+  //   result.success(mixerInfo);
+  // }
+
+  // public static void createCloudMixer(MethodCall call, Result result) {
+  //   String cloudMixerCfg = call.argument("cloudMixerCfg");
+  //   CloudroomVideoMeeting.getInstance().createCloudMixer(cloudMixerCfg);
+  // }
 
   /**
    * 影音播放
@@ -913,12 +927,12 @@ public class CloudroomSDKMethod {
       notification("meetingDropped", map);
     }
 
-    // // 房间已被结束
-    // @Override
-    // public void meetingStoped() {
-    //   Map map = new HashMap();
-    //   notification("meetingStoped", map);
-    // }
+    // 房间已被结束
+    @Override
+    public void meetingStopped() {
+      Map map = new HashMap();
+      notification("meetingStopped", map);
+    }
 
     // 网络变化通知
     @Override
@@ -1108,6 +1122,17 @@ public class CloudroomSDKMethod {
       map.put("outputInfo", gson.toJson(outputInfo));
       notification("svrMixerOutputInfo", map);
     }
+
+    // @Override
+    // public void createCloudMixerFailed(
+    //   String mixerID,
+    //   CRVIDEOSDK_ERR_DEF sdkErr
+    // ) {
+    //   Map map = new HashMap();
+    //   map.put("mixerID", mixerID);
+    //   map.put("sdkErr", sdkErr.value());
+    //   notification("createCloudMixerFailed", map);
+    // }
 
     /**
      * 影音

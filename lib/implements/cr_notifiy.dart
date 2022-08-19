@@ -21,6 +21,8 @@ class CrSDKNotifier {
   void userEnterMeeting(String userID) {}
   // 某用户离开了房间
   void userLeftMeeting(String userID) {}
+  // 房间已被结束
+  void meetingStopped() {}
   // 通知从房间里掉线了
   void meetingDropped(CR_MEETING_DROPPED_REASON reason) {}
   // 网络变化通知
@@ -55,6 +57,10 @@ class CrSDKNotifier {
   void svrMixerCfgChanged() {}
   // 云端录制文件、云端直播信息变化通知
   void svrMixerOutputInfo(CrMixerOutputInfo mixerOutputInfo) {}
+
+  // 开启云端混图器后，房间内所有人都将收到cloudMixerStateChanged通知进入MIXER_STARTING（启动中状态）
+  void cloudMixerStateChanged() {}
+
   // 通知影音文件打开
   void notifyMediaOpened(CrMediaFileInfo mediaFileInfo) {}
   // 通知影音开始播放
@@ -101,6 +107,10 @@ class CrNotifiy {
         case "userLeftMeeting":
           final String userID = arguments["userID"];
           _notifier.userLeftMeeting(userID);
+          break;
+        // 通知房间已被结束
+        case "meetingStopped":
+          _notifier.meetingStopped();
           break;
         // 通知从房间里掉线了
         case "meetingDropped":

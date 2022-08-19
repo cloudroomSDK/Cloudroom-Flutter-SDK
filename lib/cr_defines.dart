@@ -667,6 +667,7 @@ enum NOTIFIER_EVENT {
   lineOff,
   userEnterMeeting,
   userLeftMeeting,
+  meetingStopped,
   meetingDropped,
   netStateChanged,
   notifyNickNameChanged,

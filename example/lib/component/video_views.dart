@@ -38,7 +38,12 @@ class VideoPosition {
 class VideoViews extends StatefulWidget {
   Function? updateMyVideoCallback;
   Function? updateVideosCallback;
-  VideoViews({Key? key, this.updateMyVideoCallback, this.updateVideosCallback})
+  Function? updateDefaultCameraInfoCallback;
+  VideoViews(
+      {Key? key,
+      this.updateMyVideoCallback,
+      this.updateVideosCallback,
+      this.updateDefaultCameraInfoCallback})
       : super(key: key);
 
   @override
@@ -61,7 +66,8 @@ class VideoViewsState extends State<VideoViews> with CrSDKNotifier {
   List<Widget> _videos = [];
 
   ViewInfo? get myViewInfo => _myViewInfo;
-  List<ViewInfo> get viewsinfo => _viewsinfo;
+  List<ViewInfo> get viewsinfo =>
+      _viewsinfo.where((e) => e.usrVideoId != null).toList();
   List<VideoPosition> get videoPosition => _videoPosition;
 
   int _speakerVolume = 0;
@@ -209,16 +215,16 @@ class VideoViewsState extends State<VideoViews> with CrSDKNotifier {
   }
 
   // 切换前后摄像头
-  void setDefaultVideo(CR_CAMERA_POSITION cameraPosition, [Function? callback]) {
+  void setDefaultVideo(CR_CAMERA_POSITION cameraPosition) {
     // 从摄像头信息中找到对应位置的摄像头
     for (int i = 0; i < _camerasInfo.length; i++) {
       CrCameraInfo item = _camerasInfo[i];
       if (item.cameraPosition == cameraPosition) {
-        setState(() {
-          _defaultCameraInfo = item;
-        });
-        callback!(item);
+        _defaultCameraInfo = item;
         CrSDK.instance.setDefaultVideo(userId, item.videoID);
+        if (widget.updateDefaultCameraInfoCallback != null) {
+          widget.updateDefaultCameraInfoCallback!(item);
+        }
         break;
       }
     }
