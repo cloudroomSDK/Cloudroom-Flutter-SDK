@@ -32,6 +32,7 @@ class _ChatState extends State<Chat> with CrSDKNotifier, CommonFunc {
     addCrNotifierListener([
       NOTIFIER_EVENT.lineOff,
       NOTIFIER_EVENT.meetingDropped,
+      NOTIFIER_EVENT.meetingStopped,
       NOTIFIER_EVENT.notifyMeetingCustomMsg
     ]);
     initPage(confId);
@@ -45,11 +46,19 @@ class _ChatState extends State<Chat> with CrSDKNotifier, CommonFunc {
     _scrollController.dispose();
     CrSDK.instance.exitMeeting();
     CrSDK.instance.logout();
+    // CrSDK.instance.destroyMeeting(confId!);
     super.dispose();
   }
 
   @override
   lineOff(int sdkErr) {
+    toHomePage();
+  }
+
+  @override
+  meetingStopped() {
+    print("房间已被销毁");
+    CrSDK.instance.logout();
     toHomePage();
   }
 
