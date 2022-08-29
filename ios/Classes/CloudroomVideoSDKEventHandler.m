@@ -84,6 +84,17 @@ static CloudroomVideoSDKEventHandler *shareInstance;
 
 #pragma mark - Room
 
+- (void)meetingStopped {
+    FlutterEventSink sink = _eventSink;
+    
+    GUARD_SINK
+    if (sink) {
+        sink(@{
+            @"method": @"meetingStopped"
+        });
+    }
+}
+
 #pragma mark - Member
 
 - (void)userEnterMeeting:(NSString *)userID {
