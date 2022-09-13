@@ -142,7 +142,16 @@ public class CloudroomSDKMethod {
     ArrayList<MemberInfo> memberInfos = CloudroomVideoMeeting
       .getInstance()
       .getAllMembers();
-    String memberInfosJson = gson.toJson(memberInfos);
+    ArrayList<Map> mapMemberInfos = new ArrayList<Map>();
+    for (MemberInfo info : memberInfos) {
+      Map mapInfo = new HashMap();
+      mapInfo.put("userId", info.userId);
+      mapInfo.put("nickName", info.nickName);
+      mapInfo.put("audioStatus", info.audioStatus.value());
+      mapInfo.put("videoStatus", info.videoStatus.value());
+      mapMemberInfos.add(mapInfo);
+    }
+    String memberInfosJson = gson.toJson(mapMemberInfos);
     result.success(memberInfosJson);
   }
 
@@ -152,7 +161,12 @@ public class CloudroomSDKMethod {
     MemberInfo memberInfo = CloudroomVideoMeeting
       .getInstance()
       .getMemberInfo(userID);
-    result.success(gson.toJson(memberInfo));
+    Map mapInfo = new HashMap();
+    mapInfo.put("userId", memberInfo.userId);
+    mapInfo.put("nickName", memberInfo.nickName);
+    mapInfo.put("audioStatus", memberInfo.audioStatus.value());
+    mapInfo.put("videoStatus", memberInfo.videoStatus.value());
+    result.success(gson.toJson(mapInfo));
   }
 
   // 获取某个用户的昵称

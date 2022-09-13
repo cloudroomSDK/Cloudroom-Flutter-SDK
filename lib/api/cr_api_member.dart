@@ -15,28 +15,11 @@ extension CrMemberApi on CrSDK {
   Future<List<CrMemberInfo>> getAllMembers() async {
     final String result = await CrImpl.instance.getAllMembers();
     List items = json.decode(result);
-    List<String> _vStatus = [
-      "VUNKNOWN",
-      "VNULL",
-      "VCLOSE",
-      "VOPEN",
-      "VOPENING"
-    ];
-    List<String> _aStatus = [
-      "AUNKNOWN",
-      "ANULL",
-      "ACLOSE",
-      "AOPEN",
-      "AOPENING",
-      "AACCEPTING"
-    ];
     List<CrMemberInfo> members = items.map((data) {
-      String _videoStatus = data["videoStatus"];
-      String _audioStatus = data["audioStatus"];
-      int _vi = _vStatus.indexOf(_videoStatus);
-      int _ai = _aStatus.indexOf(_audioStatus);
-      CR_VSTATUS videoStatus = CR_VSTATUS.values[_vi];
-      CR_ASTATUS audioStatus = CR_ASTATUS.values[_ai];
+      int _videoStatus = data["videoStatus"];
+      int _audioStatus = data["audioStatus"];
+      CR_VSTATUS videoStatus = CR_VSTATUS.values[_videoStatus];
+      CR_ASTATUS audioStatus = CR_ASTATUS.values[_audioStatus];
       return CrMemberInfo(
           nickName: data["nickName"],
           userId: data["userId"],
@@ -47,8 +30,20 @@ extension CrMemberApi on CrSDK {
   }
 
   // 获取某个用户的信息
-  Future<String> getMemberInfo(String userID) async {
-    return await CrImpl.instance.getMemberInfo(userID);
+  Future<CrMemberInfo> getMemberInfo(String userID) async {
+    String result = await CrImpl.instance.getMemberInfo(userID);
+    Map map = json.decode(result);
+    int _videoStatus = map["videoStatus"];
+    int _audioStatus = map["audioStatus"];
+    CR_VSTATUS videoStatus = CR_VSTATUS.values[_videoStatus];
+    CR_ASTATUS audioStatus = CR_ASTATUS.values[_audioStatus];
+    CrMemberInfo _memberInfo = CrMemberInfo(
+      userId: userID,
+      nickName: map["nickName"],
+      videoStatus: videoStatus,
+      audioStatus: audioStatus,
+    );
+    return _memberInfo;
   }
 
   // 获取某个用户的昵称
